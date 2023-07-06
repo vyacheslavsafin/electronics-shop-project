@@ -17,3 +17,19 @@ def test_apply_discount():
 
     item1.apply_discount()
     assert item1.price == 8000.0
+
+def test_string_to_number():
+    assert Item.string_to_number('5.5') == 5
+    assert Item.string_to_number('3') == 3
+
+def test_repr(fixt):
+    assert fixt.__repr__() == "Item('Смартфон', 10000, 20)"
+
+def test_str(fixt):
+    assert fixt.__str__() == 'Смартфон'
+
+def test_setter_name(fixt):
+    fixt.name = 'name'
+    assert fixt.name == 'name'
+    fixt.name = 'verylongname'
+    assert fixt.name == 'verylongna'
