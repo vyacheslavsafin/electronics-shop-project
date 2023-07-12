@@ -57,6 +57,11 @@ class Item:
         """
         self.price *= self.pay_rate
 
+    def __add__(self, other):
+        if not isinstance(other, Item):
+            raise ValueError('.')
+        return self.quantity + other.quantity
+
     def __repr__(self):
         return f"Item('{self.__name}', {self.price}, {self.quantity})"
 
