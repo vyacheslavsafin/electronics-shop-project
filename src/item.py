@@ -33,12 +33,17 @@ class Item:
         self.__name = new_name
 
     @classmethod
-    def instantiate_from_csv(cls):
-        with open('../src/items.csv', 'r', encoding='windows-1251') as file:
-            dict_ = csv.DictReader(file, delimiter=',')
-            cls.all.clear()
-            for row in dict_:
-                cls(row['name'], Item.string_to_number(row['price']), Item.string_to_number(row['quantity']))
+    def instantiate_from_csv(cls, path='src/items.csv'):
+        try:
+            with open(path, 'r', encoding='windows-1251') as csvfile:
+                dict_ = csv.DictReader(csvfile, delimiter=',')
+                cls.all.clear()
+                for row in dict_:
+                    if len(row) != 3:
+                        raise InstantiateCSVError('Файл item.csv поврежден')
+                    cls(row['name'], Item.string_to_number(row['price']), Item.string_to_number(row['quantity']))
+        except FileNotFoundError:
+            raise FileNotFoundError("Отсутствует файл item.csv")
 
     @staticmethod
     def string_to_number(str_):
@@ -68,3 +73,8 @@ class Item:
 
     def __str__(self):
         return f'{self.__name}'
+
+
+class InstantiateCSVError(Exception):
+    """Файл item.csv поврежден"""
+    pass
